@@ -1,5 +1,6 @@
 import React from "react";
 import axiosInstance from "../context/axios";
+import { Clock } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
@@ -83,43 +84,46 @@ export default function HomePage() {
           )}
         </section>
 
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-8">Popular Blogs</h2>
-          {randomLoading ? (
-            <div className="flex justify-center items-center">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+        <section className="bg-white dark:bg-neutral-800/50 py-16 mt-8">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex items-center gap-2 mb-8">
+              <Clock className="w-6 h-6 text-blue-500" />
+              <h2 className="text-2xl font-bold">Popular This Week</h2>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {randomPosts?.map((post) => (
                 <div
                   key={post._id}
-                  className="flex bg-white dark:bg-neutral-800 rounded-lg overflow-hidden shadow-md"
+                  className="bg-white dark:bg-neutral-800 rounded-xl overflow-hidden shadow-lg
+                transform hover:-translate-y-2 transition-all duration-300"
                 >
                   <img
                     src={post.img}
                     alt={post.title}
-                    className="w-1/3 object-cover h-48"
+                    className="w-full h-48 object-cover"
                   />
-                  <div className="w-2/3 p-4">
-                    <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
-                    <div
-                      className="text-gray-600 dark:text-gray-300 text-sm mb-2"
-                      dangerouslySetInnerHTML={{
-                        __html: post.content.substring(0, 100) + "...",
-                      }}
-                    />
-                    <Link
-                      to={`/post/${post._id}`}
-                      className="text-blue-500 hover:underline text-sm"
-                    >
-                      Read Full Article
-                    </Link>
+                  <div className="p-4">
+                    <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">
+                      {post.category}
+                    </span>
+                    <h3 className="font-bold mt-2 line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <div className="flex items-center mt-4 space-x-2">
+                      <img
+                        src={post.user?.profileImg}
+                        alt={post.user?.username}
+                        className="w-8 h-8 rounded-full"
+                      />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {post.user?.username}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
-          )}
+          </div>
         </section>
 
         <section className="mb-16">
