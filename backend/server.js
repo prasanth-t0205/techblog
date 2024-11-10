@@ -26,7 +26,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? process.env.CLIENT_URL
+        ? "https://techblog-xi.vercel.app"
         : "http://localhost:5173",
     credentials: true,
   })
