@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+}
+
+.ql-container {
+  font-size: 28px !important;
+}
+
+.quill > .ql-container > .ql-editor.ql-blank::before {
+  color: #b3b3b1;
+}
+
+.quill-row-placeholder .ql-editor.ql-blank::before {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ql-editor {
+  min-height: 200px;
+  font-size: 1.1rem;
+}
+
+.ql-container {
+  font-family: inherit !important;
+}
+
+.dark .ql-toolbar {
+  border-color: #404040 !important;
+  background: #262626;
+}
+
+.dark .ql-container {
+  border-color: #404040 !important;
+}
+
+.dark .ql-editor {
+  background: #262626;
+  color: #e5e5e5;
+}
+
+.dark .ql-picker-label {
+  color: #e5e5e5 !important;
+}
+
+.dark .ql-stroke {
+  stroke: #e5e5e5 !important;
+}
+
+.dark .ql-fill {
+  fill: #e5e5e5 !important;
+}
