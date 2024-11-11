@@ -3,12 +3,9 @@ import axiosInstance from "../context/axios";
 import { Clock } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 export default function HomePage() {
-  const [isPageLoading, setIsPageLoading] = useState(true);
-
-  const { data: posts } = useQuery({
+  const { data: posts, isLoading: postsLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
       const res = await axiosInstance.get("/posts");
@@ -24,31 +21,6 @@ export default function HomePage() {
     },
   });
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsPageLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isPageLoading) {
-    return (
-      <div className="fixed inset-0 bg-white dark:bg-neutral-900 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative w-24 h-24">
-            <div className="absolute inset-0 border-4 border-blue-500/30 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
-          </div>
-          <div className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
-            TechBlog
-          </div>
-          <div className="text-gray-600 dark:text-gray-400">
-            Loading amazing content...
-          </div>
-        </div>
-      </div>
-    );
-  }
   return (
     <div className="min-h-screen  text-gray-900 dark:text-gray-100">
       <main className="container mx-auto px-4 py-8 mt-16">
@@ -76,35 +48,44 @@ export default function HomePage() {
 
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8">Recent Posts</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts?.slice(0, 6).map((post) => (
-              <div
-                key={post._id}
-                className="bg-white dark:bg-neutral-800 rounded-lg overflow-hidden shadow-md transition-transform duration-200 hover:scale-105"
-              >
-                <img
-                  src={post.img}
-                  alt={post.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-                  <div
-                    className="text-gray-600 dark:text-gray-300 mb-4"
-                    dangerouslySetInnerHTML={{
-                      __html: post.content.substring(0, 100) + "...",
-                    }}
-                  />
-                  <Link
-                    to={`/post/${post._id}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Read More
-                  </Link>
-                </div>
+          {postsLoading ? (
+            <div className="flex flex-col items-center gap-4 justify-center">
+              <div className="relative w-24 h-24">
+                <div className="absolute inset-0 border-4 border-blue-500/30 rounded-full"></div>
+                <div className="absolute inset-0 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {posts?.slice(0, 6).map((post) => (
+                <div
+                  key={post._id}
+                  className="bg-white dark:bg-neutral-800 rounded-lg overflow-hidden shadow-md transition-transform duration-200 hover:scale-105"
+                >
+                  <img
+                    src={post.img}
+                    alt={post.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
+                    <div
+                      className="text-gray-600 dark:text-gray-300 mb-4"
+                      dangerouslySetInnerHTML={{
+                        __html: post.content.substring(0, 100) + "...",
+                      }}
+                    />
+                    <Link
+                      to={`/post/${post._id}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      Read More
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="bg-white dark:bg-neutral-800/50 py-16 mt-8">

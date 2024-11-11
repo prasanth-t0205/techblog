@@ -16,8 +16,18 @@ import CategoriesPage from "./pages/CategoriesPage";
 import PostDisplay from "./pages/PostDisplay";
 import EditPost from "./pages/EditPost";
 import Notification from "./pages/Notification";
+import { useState, useEffect } from "react";
 
 function App() {
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const { data: authUser, isLoading } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
@@ -33,8 +43,23 @@ function App() {
     },
   });
 
-  if (isLoading) {
-    return null;
+  if (isInitialLoading || isLoading) {
+    return (
+      <div className="fixed inset-0 bg-neutral-900 dark:bg-neutral-900 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-24 h-24">
+            <div className="absolute inset-0 border-4 border-blue-500/30 rounded-full"></div>
+            <div className="absolute inset-0 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
+          </div>
+          <div className="text-2xl font-semibold text-gray-100 dark:text-gray-200">
+            TechBlog
+          </div>
+          <div className="text-gray-600 dark:text-gray-400">
+            Loading amazing content...
+          </div>
+        </div>
+      </div>
+    );
   }
   return (
     <ThemeProvider>
