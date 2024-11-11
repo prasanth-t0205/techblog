@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Clock, Edit2, Trash2, ArrowLeft, Share2 } from "lucide-react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ const PostDisplay = () => {
   const navigate = useNavigate();
 
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const { data: post, isLoading } = useQuery({
     queryKey: ["post", id],
@@ -34,6 +35,28 @@ const PostDisplay = () => {
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: post.title,
+          text: `Check out this post: ${post.title}`,
+          url: window.location.href,
+        });
+      } catch (err) {
+        setShowShareModal(true);
+      }
+    } else {
+      setShowShareModal(true);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast.success("Link copied to clipboard!");
+    setShowShareModal(false);
   };
 
   if (isLoading) {
@@ -72,7 +95,10 @@ const PostDisplay = () => {
                 </button>
               </>
             )}
-            <button className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 transition-colors duration-200">
+            <button
+              onClick={handleShare}
+              className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 transition-colors duration-200"
+            >
               <Share2 className="w-5 h-5" />
             </button>
           </div>
@@ -115,6 +141,49 @@ const PostDisplay = () => {
           </div>
         </div>
       </div>
+      {showShareModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-80">
+            <h3 className="text-lg font-semibold mb-4">Share this post</h3>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={() =>
+                  window.open(
+                    `https://twitter.com/intent/tweet?url=${window.location.href}`,
+                    "_blank"
+                  )
+                }
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Share on Twitter
+              </button>
+              <button
+                onClick={() =>
+                  window.open(
+                    `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`,
+                    "_blank"
+                  )
+                }
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Share on Facebook
+              </button>
+              <button
+                onClick={copyToClipboard}
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Copy Link
+              </button>
+            </div>
+            <button
+              onClick={() => setShowShareModal(false)}
+              className="mt-4 w-full bg-gray-200 dark:bg-gray-700 p-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
