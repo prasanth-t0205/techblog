@@ -187,38 +187,38 @@ const Header = () => {
             </button>
           </div>
           <nav className="flex flex-col space-y-4">
-            <a
-              href="#"
+            <Link
+              to={`/`}
               className="flex items-center px-4 py-3 hover:bg-blue-50 dark:hover:bg-neutral-700 rounded-lg transition-all duration-200 group"
             >
               <span className="group-hover:translate-x-2 transition-transform duration-200">
                 Home
               </span>
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to={`/categories`}
               className="flex items-center px-4 py-3 hover:bg-blue-50 dark:hover:bg-neutral-700 rounded-lg transition-all duration-200 group"
             >
               <span className="group-hover:translate-x-2 transition-transform duration-200">
                 Categories
               </span>
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to={`/about`}
               className="flex items-center px-4 py-3 hover:bg-blue-50 dark:hover:bg-neutral-700 rounded-lg transition-all duration-200 group"
             >
               <span className="group-hover:translate-x-2 transition-transform duration-200">
                 About
               </span>
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to={`/contact`}
               className="flex items-center px-4 py-3 hover:bg-blue-50 dark:hover:bg-neutral-700 rounded-lg transition-all duration-200 group"
             >
               <span className="group-hover:translate-x-2 transition-transform duration-200">
                 Contact
               </span>
-            </a>
+            </Link>
           </nav>
         </div>
       </div>
