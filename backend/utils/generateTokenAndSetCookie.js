@@ -11,5 +11,6 @@ export const generateTokenAndSetCookie = (userId, res) => {
     sameSite: "None",
     maxAge: 30 * 24 * 60 * 60 * 1000,
     path: "/",
+    partitioned: true,
   });
 };

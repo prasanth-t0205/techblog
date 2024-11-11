@@ -423,26 +423,29 @@ export default function ProfilePage() {
                   key={post._id}
                   className="bg-white dark:bg-neutral-800 rounded-lg shadow-md overflow-hidden"
                 >
-                  <img
-                    src={post.img || "/placeholder.svg"}
-                    alt={post.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                      {post.title}
-                    </h4>
-                    <p
-                      className="text-gray-600 dark:text-gray-300 mb-4"
-                      dangerouslySetInnerHTML={{
-                        __html: post.content.substring(0, 100),
-                      }}
+                  <Link to={`/post/${post._id}`}>
+                    <img
+                      src={post.img || "/placeholder.svg"}
+                      alt={post.title}
+                      className="w-full h-48 object-cover"
                     />
+                    <div className="p-4">
+                      <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                        {post.title}
+                      </h4>
+                      <p
+                        className="text-gray-600 dark:text-gray-300 mb-4"
+                        dangerouslySetInnerHTML={{
+                          __html: post.content.substring(0, 100),
+                        }}
+                      />
 
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Published {new Date(post.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Published{" "}
+                        {new Date(post.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </Link>
                 </div>
               ))}
             </div>
