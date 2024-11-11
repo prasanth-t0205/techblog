@@ -97,11 +97,13 @@ export default function HomePage() {
                   className="bg-white dark:bg-neutral-800 rounded-xl overflow-hidden shadow-lg
                 transform hover:-translate-y-2 transition-all duration-300"
                 >
-                  <img
-                    src={post.img}
-                    alt={post.title}
-                    className="w-full h-48 object-cover"
-                  />
+                  <Link to={`/post/${post._id}`}>
+                    <img
+                      src={post.img}
+                      alt={post.title}
+                      className="w-full h-48 object-cover"
+                    />
+                  </Link>
                   <div className="p-4">
                     <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">
                       {post.category}
@@ -110,14 +112,16 @@ export default function HomePage() {
                       {post.title}
                     </h3>
                     <div className="flex items-center mt-4 space-x-2">
-                      <img
-                        src={post.user?.profileImg}
-                        alt={post.user?.username}
-                        className="w-8 h-8 rounded-full"
-                      />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {post.user?.username}
-                      </span>
+                      <Link to={`/profile/${post.user?.username}`}>
+                        <img
+                          src={post.user?.profileImg}
+                          alt={post.user?.username}
+                          className="w-8 h-8 rounded-full"
+                        />
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                          {post.user?.username}
+                        </span>
+                      </Link>
                     </div>
                   </div>
                 </div>

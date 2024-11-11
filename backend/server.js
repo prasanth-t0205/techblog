@@ -26,9 +26,17 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? "https://techblog-xi.vercel.app"
+        ? [
+            "https://techblog-xi.vercel.app",
+            "https://techblog-backend.vercel.app",
+          ]
         : "http://localhost:5173",
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+    exposedHeaders: ["Set-Cookie"],
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    secure: process.env.NODE_ENV === "production",
   })
 );
 

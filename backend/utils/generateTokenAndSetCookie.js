@@ -6,9 +6,10 @@ export const generateTokenAndSetCookie = (userId, res) => {
   });
 
   res.cookie("jwt", token, {
-    maxAge: 15 * 24 * 60 * 60 * 1000, //MS
-    httpOnly: true, // prevent XSS attacks cross-site scripting attacks
-    sameSite: "strict", // prevent CSRF attacks cross-site request forgery
-    secure: process.env.NODE_ENV !== "development", // prevent man-in-the-middle attacks
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    domain: process.env.NODE_ENV === "production" ? ".vercel.app" : "localhost",
   });
 };
