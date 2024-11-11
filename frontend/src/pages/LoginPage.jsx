@@ -3,6 +3,7 @@ import { Eye, EyeOff, Loader } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../context/axios";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -23,6 +24,7 @@ export default function LoginPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      toast.success("Login successful");
     },
     onError: (error) => {
       setError(error.response?.data?.error || "Login failed");
